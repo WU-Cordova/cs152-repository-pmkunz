@@ -2,6 +2,8 @@ import pytest
 
 from datastructures.bag import Bag
 
+from typing import Iterable, Optional
+from datastructures.ibag import IBag, T
 
 @pytest.fixture
 def bag():

@@ -4,25 +4,47 @@ from datastructures.ibag import IBag, T
 
 class Bag(IBag[T]):
     def __init__(self, *items: Optional[Iterable[T]]) -> None:
-        raise NotImplementedError("__init__ method not implemented")
+        
+        self.contents = {}  # Initialize the internal data structure to store the items and their counts
+        
+        for item in items:
+            if item is not None:                # Check the item is not None
+                if item in self.contents:       
+                    self.contents[item] += 1    # Add to the count
+                else:                           # Else, meaning item is not in self.contents
+                   self.contents[item] = 1      # Make the count 1 because it is the first one being added
+            else:                               # Else, meaning item is None
+                raise TypeError 
 
     def add(self, item: T) -> None:
-        raise NotImplementedError("add method not implemented")
+        if item is not None:                    # Check the item is not None
+            if item in self.contents:       
+                self.contents[item] += 1        # Add to the count
+            else:                               # Else, meaning item is not in self.contents
+                self.contents[item] = 1         # Make the count 1 because it is the first one being added
+        else:                                   # Else, meaning item is None
+            raise TypeError 
 
-    def remove(self, item: T) -> None:
-        raise NotImplementedError("remove method not implemented")
+    def remove(self, item: T) -> None:    
+        if item is not None:                    # Check the item is not None
+            if item in self.contents:   
+                self.contents[item] -= 1        # Subtract from the count
+            else:                               # Else, meaning item is not in self.contents       
+                raise ValueError 
+        else:                                   # Else, meaning item is None
+            raise TypeError 
 
     def count(self, item: T) -> int:
-        raise NotImplementedError("count method not implemented")
+        return self.contents.get(item,0)        # Return the count, or if there is none then return 0 by default
 
     def __len__(self) -> int:
-        raise NotImplementedError("__len__ method not implemented")
-
+        return sum(self.contents.values())      # Returns total number of items (includes duplicates)
+    
     def distinct_items(self) -> int:
-        raise NotImplementedError("distinct_items method not implemented")
+        return self.contents.keys()             # Returns the keys, the distinct items
 
     def __contains__(self, item) -> bool:
-        raise NotImplementedError("__contains__ method not implemented")
+        return item in self.contents            # Check if the item exists in the bag
 
     def clear(self) -> None:
-        raise NotImplementedError("clear method not implemented")
+        self.contents.clear()                   # Clear all items in the bag

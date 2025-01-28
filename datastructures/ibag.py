@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional, TypeVar, Generic, Iterable
+from typing import Optional, TypeVar, Generic, Iterable 
 
 T = TypeVar('T')  # Generic type for items in the Bag
 
