@@ -27,7 +27,7 @@ class Bag(IBag[T]):
 
     def remove(self, item: T) -> None:    
         if item is not None:                    # Check the item is not None
-            if item in self.contents:   
+            if item in self.contents and self.contents[item] > 0:   
                 self.contents[item] -= 1        # Subtract from the count
             else:                               # Else, meaning item is not in self.contents       
                 raise ValueError 
