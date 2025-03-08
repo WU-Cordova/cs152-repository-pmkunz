@@ -1,11 +1,8 @@
 class Cell:
     
     def __init__(self, is_alive: bool = False) -> None:
-        #self.is_alive = alive #?
+        """ Constructor """
         self.is_alive = is_alive        #instance variable
-
-        #self.neighbors
-        #self.location
     
     def set_alive(self) -> None:
         """ Sets the cell to be alive."""

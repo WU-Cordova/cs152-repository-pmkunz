@@ -1,10 +1,11 @@
-import random
 from datastructures.array2d import Array2D
 from projects.project2.cell import Cell
-import os
+import random
+import copy
 
 class Grid:
 	def __init__(self, width: int, height: int) -> None:
+		""" Constructor """
 
 		# Grid dimensions:
 		self.width = width		# width = number of columns
@@ -24,10 +25,6 @@ class Grid:
 
 	def display(self):
 		""" Displays the current grid """
-		
-		#print(self.grid)
-
-		os.system('cls' if os.name == 'nt' else 'clear')
 
 		print("+" +"----+" * self.width)
 
@@ -39,12 +36,8 @@ class Grid:
 				else:
 					row_display += " ⬛️ "
 				row_display += "|"
-					
-				# if col < self.width -1:
-				# 	row_display += " "
 
 			print(row_display)
-
 			print("+" + "----+" * (self.width))
 
 	def count_neighbors(self, row: int, col: int) -> int:
@@ -69,28 +62,29 @@ class Grid:
 
 	def next_generation(self) -> None:
 		""" computes next generation of the grid """
-		#?
+
 		new_grid: Array2D = Array2D(starting_sequence=[[Cell(is_alive=False) for _ in range(self.width)] for _ in range(self.height)], data_type = Cell)
 
 		for row in range(self.height):
 			for col in range(self.width):
 				cell = self.grid[row][col]							# current cell in the iteration
 				alive_neighbors = self.count_neighbors(row, col)	# takes that cell and sees how many alive neighbors there are
+				
 				if cell.is_alive:
 					if alive_neighbors < 2 or alive_neighbors > 3:
 						new_grid[row][col].set_dead()  				# death of cell by underpopulation or overpopulation
 					else:
 						new_grid[row][col].set_alive()  			# cell survives, stays alive
-				else: #(the cell is not alive)
+				else: #(the cell is NOT alive)
 					if alive_neighbors == 3:
 						new_grid[row][col].set_alive()  			# Cell becomes alive by reproduction
 
         # Add the current grid to history
-		self.history.append(self.grid)
+		self.history.append(copy.deepcopy(self.grid))
 		if len(self.history) > 5:
 			self.history.pop(0)
 
-		self.grid = new_grid
+		self.grid = copy.deepcopy(new_grid)
 
 	def is_stable(self) -> bool:
 		""" checks if the grid has become stable """
@@ -101,13 +95,9 @@ class Grid:
 		if self.grid == self.history[-1]:
 			return True
 
-			# if self.grid == self.history[-2]:
-			# 	etc
-		#?
+		for past_grid in self.history[:-1]:
+			if self.grid == past_grid:
+				print("Grid is repeating or alternating.")
+				return False
 
-		# for past_grid in self.history:
-		# 	if self.grid == past.grid:
-		# 		continue
-		# 	else:
-		# 		break
-		# return True 
+		return False

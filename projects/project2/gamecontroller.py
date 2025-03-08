@@ -1,33 +1,25 @@
 from projects.project2.grid import Grid
 from projects.project2.kbhit import KBHit
 import time
+import os
 
 class GameController:
 
     def __init__(self, grid: Grid) -> None:
-        #print("from the constructor")
+        """ Constructor """
         self.grid = grid
         self.kb = KBHit()
         self.running = True
-        self.auto_mode = True 
-
-    def choose_mode(self) -> bool:
-        """ Choose automatic mode or manual mode """
-        print("Welcome to the Game of Life!")
-        mode = input("Would you like the game to run in automatic mode? (y/n)").strip.lower()
-        
-        # return mode == "y"  # Will return True if it does, False if it doesn't
-
-        if mode == "y":
-            self.auto_mode = True
-        else:
-            self.auto_mode = False
+        self.auto_mode = False 
 
     def run(self, generations: int) -> None:
 
         generation_count = 0
+        key = None
 
         while self.running:
+
+            os.system('cls' if os.name == 'nt' else 'clear')
 
             self.grid.display()		# runs function from grid.py
 
@@ -36,16 +28,39 @@ class GameController:
                 break
             
             if self.auto_mode:
-                time.sleep(1)
-            else:
-                print("Press any key to continue onto the next generation.")
+                print("Press 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                time.sleep(1)   # 1 second delay when displaying the new generation
+                self.grid.next_generation()
+                
                 if self.kb.kbhit():
-                    self.kb.getch()
-            self.grid.next_generation()
+                    key = self.kb.getch()
+                    if key.lower() == 'm':  # Switch to manual mode
+                        self.auto_mode = False
+                    elif key.lower() == 'q':  # Quit the game
+                        print("Thanks for playing!")
+                        self.running = False
+                        break
 
+            else: # manual mode
+                print("Press 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+
+                while not self.kb.kbhit():
+                    time.sleep(0.1)
+                
+                key = self.kb.getch()
+
+                if key: #checks if key was pressed
+                    if key.lower() == 'a':
+                        self.auto_mode = True
+                    elif key.lower() =='m':
+                        self.auto_mode = False
+                    elif key.lower()=='s':
+                        self.grid.next_generation()
+                    elif key.lower() == 'q':
+                        print("Thanks for playing!")
+                        self.running = False
+                        break
+                    else:
+                        print("Invalid key. Press 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                    
             generation_count += 1
-
-    def quit_game(self) -> None:
-        """ Quit the game """
-        print("Thanks for playing!")
-        self.running = False
