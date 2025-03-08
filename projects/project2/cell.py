@@ -12,6 +12,6 @@ class Cell:
         """ Sets the cell to be dead """
         self.is_alive = False
 
-    def is_alive(self) -> bool:
+    def check_alive(self) -> bool:
         """ Returns whether or not the cell is alive """
         return self.is_alive

@@ -19,7 +19,7 @@ class Grid:
 				is_alive = random.choice([True, False])
 				cells[row].append(Cell(is_alive=is_alive))
 
-		self.grid: Array2D = Array2D(starting_sequence = cells, data_type = Cell)       # check?
+		self.grid: Array2D = Array2D(starting_sequence = cells, data_type = Cell)
 
 		self.history = [] # stores grid history
 
@@ -86,18 +86,44 @@ class Grid:
 
 		self.grid = copy.deepcopy(new_grid)
 
+	def check_grid(self, i) -> bool:
+
+		# Compare each cell in the grid
+		for row in range(self.height):
+			for col in range(self.width):
+				if self.grid[row][col].check_alive() != self.history[i][row][col].check_alive():
+					return False
+		return True
+
 	def is_stable(self) -> bool:
 		""" checks if the grid has become stable """
 		
-		if len(self.history) < 3:
-			return False
+		#if len(self.history) > 1:
 
-		if self.grid == self.history[-1]:
-			return True
-
-		for past_grid in self.history[:-1]:
-			if self.grid == past_grid:
-				print("Grid is repeating or alternating.")
-				return False
-
+		for i in range(len(self.history)-1):
+			if self.check_grid(i):
+				return True
 		return False
+
+
+
+
+
+# if len(self.history) < 3:
+		# 	return False
+
+		# if self.grid == self.history[-1]:
+		# 	return True
+
+		# for past_grid in self.history[:-1]:
+		# 	if self.grid == past_grid:
+		# 		print("Grid is repeating or alternating.")
+		# 		return False
+
+		# return False
+
+		# if len(self.history) < 3:
+		# 	return False
+
+			# # Compare the current grid with the last one in history
+			# last_grid = self.history[-1]

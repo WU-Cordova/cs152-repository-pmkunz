@@ -25,10 +25,11 @@ class GameController:
 
             if self.grid.is_stable():
                 print("Grid is stable. Ending simulation.")
+                self.running = False
                 break
             
             if self.auto_mode:
-                print("Press 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                print("Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
                 time.sleep(1)   # 1 second delay when displaying the new generation
                 self.grid.next_generation()
                 
@@ -42,7 +43,7 @@ class GameController:
                         break
 
             else: # manual mode
-                print("Press 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                print("Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
 
                 while not self.kb.kbhit():
                     time.sleep(0.1)
@@ -61,6 +62,39 @@ class GameController:
                         self.running = False
                         break
                     else:
-                        print("Invalid key. Press 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                        print("Invalid key. Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
                     
             generation_count += 1
+
+        self.restart_or_quit()
+
+    def restart_or_quit(self):
+        """ Offers the user a chance to start a new simulation or quit the program"""
+
+        answer = None
+
+        print("\nSimulation has ended.")
+        print("Would you like to start a new simulation (n) or quit (q)? ")
+
+        while True:
+
+            while not self.kb.kbhit():
+                time.sleep(0.1)
+
+            answer = self.kb.getch()
+
+            if answer:
+                if answer == 'n':
+                    self.start_new_simulation()
+                    break
+                elif answer == 'q':
+                    print("Exiting the program. Thanks for playing!")
+                    self.running = False
+                    break
+                else:
+                    print("Invalid key. Enter 'n' to start a new simulation or 'q' to quit.")
+
+    def start_new_simulation(self):
+        """ Starts a new simulation by resetting the grid """
+        self.grid = Grid(self.grid.width, self.grid.height)
+        self.run(100)
