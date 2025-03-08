@@ -21,7 +21,7 @@ class Grid:
 
 		self.grid: Array2D = Array2D(starting_sequence = cells, data_type = Cell)
 
-		self.history = [] # stores grid history
+		self.history = [] 		# stores grid history
 
 	def display(self):
 		""" Displays the current grid """
@@ -52,7 +52,7 @@ class Grid:
 		alive_neighbors = 0		# tracks how many neighbors are alive
 
 		for row_offset, col_offset in neighbor_positions:
-			neighbor_row, neighbor_col = row + row_offset, col + col_offset		#calculates the actual row and column it's at
+			neighbor_row, neighbor_col = row + row_offset, col + col_offset			#calculates the actual row and column it's at
 
 			if 0 <= neighbor_row < self.height and 0 <= neighbor_col < self.width:	#check we are within the grid bounds
 				if self.grid[neighbor_row][neighbor_col].is_alive:
@@ -104,26 +104,3 @@ class Grid:
 			if self.check_grid(i):
 				return True
 		return False
-
-
-
-
-
-# if len(self.history) < 3:
-		# 	return False
-
-		# if self.grid == self.history[-1]:
-		# 	return True
-
-		# for past_grid in self.history[:-1]:
-		# 	if self.grid == past_grid:
-		# 		print("Grid is repeating or alternating.")
-		# 		return False
-
-		# return False
-
-		# if len(self.history) < 3:
-		# 	return False
-
-			# # Compare the current grid with the last one in history
-			# last_grid = self.history[-1]

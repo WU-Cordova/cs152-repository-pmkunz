@@ -14,61 +14,68 @@ class GameController:
 
     def run(self, generations: int) -> None:
 
-        generation_count = 0
-        key = None
+        while True:
 
-        while self.running:
+            generation_count = 0
+            key = None
 
-            os.system('cls' if os.name == 'nt' else 'clear')
+            while self.running:
 
-            self.grid.display()		# runs function from grid.py
+                os.system('cls' if os.name == 'nt' else 'clear')
 
-            if self.grid.is_stable():
-                print("Grid is stable. Ending simulation.")
-                self.running = False
-                break
-            
-            if self.auto_mode:
-                print("Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
-                time.sleep(1)   # 1 second delay when displaying the new generation
-                self.grid.next_generation()
+                self.grid.display()		# runs function from grid.py
+
+                if self.grid.is_stable():
+                    print("Grid is stable. Ending simulation.")
+                    self.running = False
+                    break
                 
-                if self.kb.kbhit():
-                    key = self.kb.getch()
-                    if key.lower() == 'm':  # Switch to manual mode
-                        self.auto_mode = False
-                    elif key.lower() == 'q':  # Quit the game
-                        print("Thanks for playing!")
-                        self.running = False
-                        break
-
-            else: # manual mode
-                print("Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
-
-                while not self.kb.kbhit():
-                    time.sleep(0.1)
-                
-                key = self.kb.getch()
-
-                if key: #checks if key was pressed
-                    if key.lower() == 'a':
-                        self.auto_mode = True
-                    elif key.lower() =='m':
-                        self.auto_mode = False
-                    elif key.lower()=='s':
-                        self.grid.next_generation()
-                    elif key.lower() == 'q':
-                        print("Thanks for playing!")
-                        self.running = False
-                        break
-                    else:
-                        print("Invalid key. Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                if self.auto_mode:
+                    print("Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                    time.sleep(1)   # 1 second delay when displaying the new generation
+                    self.grid.next_generation()
                     
-            generation_count += 1
+                    if self.kb.kbhit():
+                        key = self.kb.getch()
+                        if key.lower() == 'm':  # Switch to manual mode
+                            self.auto_mode = False
+                        elif key.lower() == 'q':  # Quit the game
+                            print("Thanks for playing!")
+                            self.running = False
+                            break
 
-        self.restart_or_quit()
+                else: # manual mode
+                    print("Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
 
-    def restart_or_quit(self):
+                    while not self.kb.kbhit():
+                        time.sleep(0.1)
+                    
+                    key = self.kb.getch()
+
+                    if key: #checks if key was pressed
+                        if key.lower() == 'a':
+                            self.auto_mode = True
+                        elif key.lower() =='m':
+                            self.auto_mode = False
+                        elif key.lower()=='s':
+                            self.grid.next_generation()
+                        elif key.lower() == 'q':
+                            print("Thanks for playing!")
+                            self.running = False
+                            break
+                        else:
+                            print("Invalid key. Enter 'a' for automatic mode, 'm' for manual mode, 's' to continue onto the next generation, or 'q' to quit.")
+                        
+                generation_count += 1
+
+            if self.restart_or_quit():  #if this returned True
+                self.grid = Grid(self.grid.width, self.grid.height)
+                self.running = True
+            else:
+                print("Exiting the program. Thanks for playing!")
+                break
+
+    def restart_or_quit(self) -> bool:
         """ Offers the user a chance to start a new simulation or quit the program"""
 
         answer = None
@@ -85,16 +92,8 @@ class GameController:
 
             if answer:
                 if answer == 'n':
-                    self.start_new_simulation()
-                    break
+                    return True     
                 elif answer == 'q':
-                    print("Exiting the program. Thanks for playing!")
-                    self.running = False
-                    break
+                    return False
                 else:
                     print("Invalid key. Enter 'n' to start a new simulation or 'q' to quit.")
-
-    def start_new_simulation(self):
-        """ Starts a new simulation by resetting the grid """
-        self.grid = Grid(self.grid.width, self.grid.height)
-        self.run(100)
