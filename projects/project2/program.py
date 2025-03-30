@@ -7,7 +7,7 @@ from projects.project2.gamecontroller import GameController
 # export PYTHONPATH=/Users/pkmckenna/Documents/GitHub/cs152-repository-pmkunz:$PYTHONPATH
 
 def main():
-    grid = Grid(10, 10)
+    grid = Grid(10, 7)
     game_controller = GameController(grid)
     game_controller.run(100)
 
