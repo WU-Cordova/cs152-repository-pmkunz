@@ -129,7 +129,8 @@ class CircularQueue(IQueue[T]):
                 >>> q.rear
                 IndexError('Queue is empty')
         '''
-        self.circularqueue = [None] * self._maxsize
+        #self.circularqueue = [None] * self._maxsize
+        self.circularqueue = Array([data_type()]*maxsize, data_type)    # Reset array
         self.front_index = 0
         self.rear_index = 0
         self._size = 0
