@@ -397,7 +397,8 @@ class ILinkedList[T](abc.ABC):
         ...
     
     @abstractmethod
-    def __iter__(self) -> ILinkedList[T]:
+    #def __iter__(self) -> ILinkedList[T]:     # original given in file
+    def __iter__(self) -> Iterator[T]:          # changed in class, changed in other file too
 
         ''' Returns an iterator for the list
         
