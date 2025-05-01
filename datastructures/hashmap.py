@@ -61,14 +61,23 @@ class HashMap(IHashMap[KT, VT]):
             self._resize()
 
     def keys(self) -> Iterator[KT]:
-        raise NotImplementedError("HashMap.__setitem__() is not implemented yet.")
-    
+        # raise NotImplementedError("HashMap.__setitem__() is not implemented yet.")
+        for bucket in self._buckets:
+            for k, v in bucket:
+                yield k
+
     def values(self) -> Iterator[VT]:
-        raise NotImplementedError("HashMap.values() is not implemented yet.")
+        # raise NotImplementedError("HashMap.values() is not implemented yet.")
+        for bucket in self._buckets:
+            for k, v in bucket:
+                yield v
 
     def items(self) -> Iterator[Tuple[KT, VT]]:
-        raise NotImplementedError("HashMap.items() is not implemented yet.")
-            
+        # raise NotImplementedError("HashMap.items() is not implemented yet.")
+        for bucket in self._buckets:
+            for k, v in bucket:
+                yield (k, v)
+
     def __delitem__(self, key: KT) -> None:
         
         bucket_index = self._get_bucket_number(key)

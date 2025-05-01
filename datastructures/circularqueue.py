@@ -113,6 +113,18 @@ class CircularQueue(IQueue[T]):
         self._size -= 1
         return item
 
+
+    ### i added
+    def __iter__(self):
+        idx = self.front_index
+        count = 0
+        while count < self._size:
+            yield self.circularqueue[idx]
+            idx = (idx + 1) % self._maxsize
+            count += 1
+    ####
+
+
     def clear(self) -> None:
         ''' Removes all items from the queue 
         
