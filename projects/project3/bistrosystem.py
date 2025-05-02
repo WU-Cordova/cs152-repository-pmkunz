@@ -15,12 +15,9 @@ class BistroSystem:
 
     def __init__(self):
         self.menu = Array(data_type=Drink)
-        self.open_orders = CircularQueue(maxsize=50, data_type=object)
+        self.open_orders = CircularQueue(maxsize=100, data_type=object)
         self.completed_orders = Bag()
         self.sales_summary = HashMap()
-
-        self.sales = {}  # Dictionary to track drink name & quantity sold
-
 
     def add_menu_item(self, drink: Drink) -> None:
         """ Adds a drink to the menu """
@@ -28,7 +25,7 @@ class BistroSystem:
 
     def display_menu(self) -> None:
         """ Prints the current menu """
-        print("Bistro Menu:")
+        print("🍹 Bearcat Bistro Menu:")
         for i in range (len(self.menu)):
             print(f"{i+1}. {self.menu[i]}")
 
@@ -72,25 +69,6 @@ class BistroSystem:
 
     def print_end_of_day_summary(self) -> None:
         """ Displays the total sales and quanttieis by drink """
-
-        print("\n📊 End-of-Day Report:")
-
-        # for drink_name in self.sales_summary:
-        #     quantity, total_sales = self.sales_summary[drink_name]
-        #     print(f"- {drink_name}: {quantity} sold, ${total_sales:.2f}")
-
-
-
-        # print("-" * 28)
-        # print(f"{'Drink Name':<24}Qty Sold   Total Sales")
-        # total_revenue = 0
-        # for name, count in self.sales.items():
-        #     drink = next(d for d in self.menu if d.name == name)
-        #     total = count * drink.price
-        #     total_revenue += total
-        #     print(f"{name:<24}{count:<10}{f'${total:.2f}'}")
-        # print(f"{'Total Revenue:':<34}{f'${total_revenue:.2f}'}")
-
 
         print("\n📊 End-of-Day Report:")
         print("-" * 28)

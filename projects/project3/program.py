@@ -34,8 +34,6 @@ def main():
         ###########
         elif choice == "2":
             name = input("\nWhat's your name? ").strip()
-            # system.display_menu()
-            # print("How many drinks would you like to order?\n")
 
             try:
                 num_drinks = int(input("How many drinks would you like to order? ").strip())
@@ -61,7 +59,6 @@ def main():
                 customization = input(f"Any customization for {system.menu[drink_num - 1].name}? ").strip()
                 items.append((drink_num - 1, customization))
 
-
             # Preview the order
             print(f"\n📝 Order Summary for {name}:")
             for idx, cust in items:
@@ -71,6 +68,7 @@ def main():
                     summary += f" - {cust}"
                 print(f"- {summary}")
 
+            # Confirmation of order
             confirm = input("\nConfirm order? (yes/no): ").strip().lower()
             if confirm == "yes":
                 system.take_order(name, items)
